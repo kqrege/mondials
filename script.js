@@ -3,6 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const fades = document.querySelectorAll('.fade');
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
+    const avatarImg = document.getElementById('avatarImg');
+
+    /* Avatar - legacy endpoint returns image directly via redirect */
+    if (avatarImg) {
+        avatarImg.src = 'https://www.roblox.com/avatar-thumbnail/image?userId=5662903226&width=420&height=420&format=png';
+    }
 
     /* Scroll animations */
     const observer = new IntersectionObserver((entries) => {
