@@ -62,6 +62,97 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     animateParticles();
 
+    /* Falling Feathers */
+    const feathersContainer = document.getElementById('feathers-container');
+    const feathers = [];
+    const FEATHER_SRC = 'assets/feather.png';
+    const SPAWN_INTERVAL = 600;
+    const MAX_FEATHERS = 30;
+
+    function createFeather() {
+        if (feathers.length >= MAX_FEATHERS) return;
+
+        const img = document.createElement('img');
+        img.src = FEATHER_SRC;
+        img.className = 'feather';
+        
+        const size = 20 + Math.random() * 20;
+        img.style.width = size + 'px';
+        
+        const startX = Math.random() * window.innerWidth;
+        const feather = {
+            el: img,
+            x: startX,
+            y: -50,
+            speed: 0.5 + Math.random() * 1.2,
+            swayOffset: Math.random() * Math.PI * 2,
+            swaySpeed: 0.5 + Math.random() * 1,
+            swayAmp: 20 + Math.random() * 30,
+            rotation: Math.random() * 360,
+            rotSpeed: (Math.random() - 0.5) * 2,
+            dragging: false
+        };
+
+        img.style.left = startX + 'px';
+        img.style.top = feather.y + 'px';
+        img.style.transform = `rotate(${feather.rotation}deg)`;
+
+        /* Drag Logic */
+        img.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            feather.dragging = true;
+            img.classList.add('dragging');
+            const startX = e.clientX - feather.x;
+            const startY = e.clientY - feather.y;
+
+            function onMove(e) {
+                if (!feather.dragging) return;
+                feather.x = e.clientX - startX;
+                feather.y = e.clientY - startY;
+                img.style.left = feather.x + 'px';
+                img.style.top = feather.y + 'px';
+            }
+
+            function onUp() {
+                feather.dragging = false;
+                img.classList.remove('dragging');
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onUp);
+            }
+
+            document.addEventListener('mousemove', onMove);
+            document.addEventListener('mouseup', onUp);
+        });
+
+        feathersContainer.appendChild(img);
+        feathers.push(feather);
+    }
+
+    function animateFeathers() {
+        for (let i = feathers.length - 1; i >= 0; i--) {
+            const f = feathers[i];
+            
+            if (!f.dragging) {
+                f.y += f.speed;
+                f.x += Math.sin(f.y * 0.01 + f.swayOffset) * f.swayAmp * 0.02;
+                f.rotation += f.rotSpeed;
+                
+                f.el.style.top = f.y + 'px';
+                f.el.style.left = f.x + 'px';
+                f.el.style.transform = `rotate(${f.rotation}deg)`;
+            }
+
+            if (f.y > window.innerHeight + 50) {
+                f.el.remove();
+                feathers.splice(i, 1);
+            }
+        }
+        requestAnimationFrame(animateFeathers);
+    }
+
+    setInterval(createFeather, SPAWN_INTERVAL);
+    animateFeathers();
+
     /* Card cursor gradient */
     document.querySelectorAll('.card').forEach(card => {
         card.addEventListener('mousemove', (e) => {
