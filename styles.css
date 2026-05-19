@@ -169,16 +169,16 @@ main {
 /* AVATAR CARD */
 
 .avatar-card {
-    display: block;
-    width: 180px;
-    height: 180px;
-    margin: 0 auto 12px;
-    border-radius: 16px;
-    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px 6px 6px;
+    background: var(--card);
     border: 2px solid var(--border);
+    border-radius: 100px;
+    text-decoration: none;
     transition: border-color 0.3s ease, transform 0.2s ease;
     cursor: pointer;
-    background: var(--card);
 }
 
 .avatar-card:hover {
@@ -187,25 +187,18 @@ main {
 }
 
 .avatar-img {
-    width: 100%;
-    height: 100%;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
     display: block;
     object-fit: cover;
 }
 
-.avatar-name-link {
-    display: block;
-    text-align: center;
+.avatar-name {
     font-size: 14px;
     font-weight: 600;
     color: var(--white);
-    text-decoration: none;
     letter-spacing: 0.01em;
-    transition: color 0.2s ease;
-}
-
-.avatar-name-link:hover {
-    color: var(--blue);
 }
 
 /* SECTIONS */
@@ -391,7 +384,16 @@ main {
     }
 
     .avatar-card {
-        width: 140px;
-        height: 140px;
+        padding: 5px 12px 5px 5px;
+        gap: 8px;
+    }
+
+    .avatar-img {
+        width: 28px;
+        height: 28px;
+    }
+
+    .avatar-name {
+        font-size: 13px;
     }
 }
